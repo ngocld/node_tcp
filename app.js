@@ -1,55 +1,43 @@
 var net = require('net');
-const sleep = require('sleep-promise');
 
+var lsService = [{
+        host: 'vnexpress.net',
+        port: 443
+    },
+    {
+        host: 'google.com',
+        port: 443
+    },
+    {
+        host: 'zingnews.vn',
+        port: 443
+    },
+    {
+        host: 'thanhnien.vn',
+        port: 443
+    },
+    {
+        host: 'tuoitre.vn',
+        port: 443
+    },
+]
 
-var HOST = 'vnexpress.net';
-var PORT = 443;
-
-var global = {
-    connected : null
-}
-
-function info() {
+const CheckService = (host, port) => {
     var client = new net.Socket();
-
-    client.connect(PORT, HOST, function (data) {
-        console.log('CONNECTED TO: ' + HOST + ':' + PORT)
-        global.connected = true
-        client.destroy()
-        
+    
+    client.connect(port, host, function () {
+        console.log('CONNECTED TO: ' + host + ':' + port);
+        client.destroy();
     });
 
     client.on('error', function (error) {
         if (error) {
             console.log('Socket error');
-            global.connected = false
         }
     });
 }
 
-info()
-
-async function info1 () {
-    console.log("This prints immediately");
-    await sleep(2000);
-    console.log("This prints 2 seconds later");
-    console.log(global.connected);
-};
-
-info1()
-
-
-
-// var client = new net.Socket();
-
-// client.connect(PORT, HOST, function (data) {
-//     console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-//     console.log(data);
-//     client.destroy();
-// });
-
-// client.on('error', function (error) {
-//     if (error) {
-//         console.log('Socket error');
-//     }
-// });
+lsService.forEach(item => {
+    console.log(`Try to connect ${item.host}:${item.port}`);
+    CheckService(item.host, item.port)
+})
