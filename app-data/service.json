@@ -1,0 +1,26 @@
+[
+    {
+        "host": "vnexpress.net",
+        "port": 443
+    },
+    {
+        "host": "google.com",
+        "port": 443
+    },
+    {
+        "host": "zingnews.vn",
+        "port": 443
+    },
+    {
+        "host": "thanhnien.vn",
+        "port": 443
+    },
+    {
+        "host": "tuoitre.vn",
+        "port": 443
+    },
+    {
+        "host": "facebook.vn",
+        "port": 443
+    }
+]
