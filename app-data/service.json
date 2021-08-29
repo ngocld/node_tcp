@@ -1,26 +1,38 @@
 [
     {
         "host": "vnexpress.net",
-        "port": 443
+        "port": 443,
+        "system": "news",
+        "group": "internet"
     },
     {
         "host": "google.com",
-        "port": 443
+        "port": 443,
+        "system": "search",
+        "group": "internet"
     },
     {
         "host": "zingnews.vn",
-        "port": 443
+        "port": 443,
+        "system": "news",
+        "group": "internet"
     },
     {
         "host": "thanhnien.vn",
-        "port": 443
+        "port": 443,
+        "system": "news",
+        "group": "internet"
     },
     {
         "host": "tuoitre.vn",
-        "port": 443
+        "port": 443,
+        "system": "news",
+        "group": "internet"
     },
     {
         "host": "facebook.vn",
-        "port": 443
+        "port": 443,
+        "system": "news",
+        "group": "internet"
     }
 ]

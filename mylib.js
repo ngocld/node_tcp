@@ -1,57 +1,71 @@
 var net = require('net')
 var fs = require('fs');
+var deasync = require('deasync');
+var log4js = require('log4js')
+
+log4js.configure({
+    appenders: {
+        everything: {
+            type: 'file',
+            filename: 'all-logs.log',
+            maxLogSize: 10485760,
+            backups: 30,
+            compress: true
+        }
+    },
+    categories: {
+        default: {
+            appenders: ['everything'],
+            level: 'debug'
+        }
+    }
+})
+
+const logger = log4js.getLogger()
+logger.level = 'debugs'
+
+const socketSes = {
+    connnect: false
+}
 
 const lsService = JSON.parse(fs.readFileSync('./app-data/service.json', 'utf8'));
 
 const CheckService = (host, port) => {
+    var done = false;
+
     var client = new net.Socket();
-
+    console.log('Try to connect ' + host + ':' + port);
     client.setTimeout(3000)
-
     client.connect(port, host, function () {
-        console.log('CONNECTED TO: ' + host + ':' + port);
+        console.log('success');
         client.destroy();
+        done = true
+        socketSes.connnect = true
     });
 
     client.on('error', function (error) {
         if (error) {
-            console.log('Socket error');
+            console.log('socket error')
+            done = true
+            socketSes.connnect = false
         }
     });
 
     client.on('timeout', () => {
         console.log('socket timeout');
         client.destroy();
-    });
-}
-
-const CheckService1 = async (host, port) => {
-    var client = new net.Socket();
-
-    client.setTimeout(3000)
-
-    client.connect(port, host, async function () {
-        console.log('CONNECTED TO: ' + host + ':' + port);
-        client.destroy();
-        return true
+        done = true
+        socketSes.connnect = false
     });
 
-    client.on('error', async function (error) {
-        if (error) {
-            console.log('Socket error')
-            return false
-        }
-    });
-
-    client.on('timeout', async () => {
-        console.log('socket timeout');
-        client.destroy();
-        return false
+    deasync.loopWhile(function () {
+        return !done
     });
 }
 
 module.exports = {
     CheckService,
     lsService,
-    CheckService1
+    socketSes,
+    logger
 }

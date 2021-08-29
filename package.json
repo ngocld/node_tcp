@@ -11,7 +11,7 @@
   "dependencies": {
     "deasync": "^0.1.23",
     "express": "^4.17.1",
-    "sleep-promise": "^9.1.0",
-    "sync": "^0.2.5"
+    "express-basic-auth": "^1.2.0",
+    "log4js": "^6.3.0"
   }
 }
