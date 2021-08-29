@@ -7,8 +7,7 @@ const port = 8080
 const host = '0.0.0.0'
 const app = express()
 
-app.listen(port, host)
-console.log(`starting service http://${host}:${port}`);
+mylib.logger.info(`starting service http://${host}:${port}`)
 
 app.use(basicAuth({
     users: {
@@ -16,7 +15,6 @@ app.use(basicAuth({
         'hlv': 'ilovehanwha'
     }
 }))
-
 
 app.get('/check-service', (req, res) => {
     mylib.logger.info(req.url)
@@ -52,3 +50,5 @@ app.get('/check-service-sum', (req, res) => {
     res.contentType = 'text/plain;charset=utf-8'
     res.send(final)
 })
+
+app.listen(port, host)
