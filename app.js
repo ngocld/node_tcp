@@ -1,19 +1,14 @@
 var mylib = require('./mylib')
 var express = require('express')
-const basicAuth = require('express-basic-auth')
+var basicAuth = require('express-basic-auth')
+const { host, port, services, users} = require('./config');
 
-// App
-const port = 8080
-const host = '0.0.0.0'
 const app = express()
 
 mylib.logger.info(`starting service http://${host}:${port}`)
 
 app.use(basicAuth({
-    users: {
-        'ngocld': 'ngocld',
-        'hlv': 'ilovehanwha'
-    }
+    users: users
 }))
 
 app.get('/check-service', (req, res) => {
@@ -21,7 +16,7 @@ app.get('/check-service', (req, res) => {
     res.contentType = 'text/plain;charset=utf-8'
     var final = ''
 
-    mylib.lsService.forEach(item => {
+    services.forEach(item => {
         mylib.CheckService(item.host, item.port)
         final += `${item.system} ${item.group} ${item.host}:${item.host} -> ${mylib.socketSes.connnect} \n`
     })
@@ -35,7 +30,7 @@ app.get('/check-service-sum', (req, res) => {
     let success = 0
     let fails = 0
 
-    mylib.lsService.forEach(item => {
+    services.forEach(item => {
         mylib.CheckService(item.host, item.port)
         if (mylib.socketSes.connnect === true)
             success++

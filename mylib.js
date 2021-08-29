@@ -2,6 +2,7 @@ var net = require('net')
 var fs = require('fs');
 var deasync = require('deasync');
 var log4js = require('log4js')
+const { services } = require('./config');
 
 log4js.configure({
     appenders: {
@@ -27,8 +28,6 @@ logger.level = 'debugs'
 const socketSes = {
     connnect: false
 }
-
-const lsService = JSON.parse(fs.readFileSync('./app-data/service.json', 'utf8'));
 
 const CheckService = (host, port) => {
     var done = false;
@@ -65,7 +64,6 @@ const CheckService = (host, port) => {
 
 module.exports = {
     CheckService,
-    lsService,
     socketSes,
     logger
 }
