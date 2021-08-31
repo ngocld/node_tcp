@@ -1,7 +1,8 @@
 var mylib = require('./mylib')
 var express = require('express')
 var basicAuth = require('express-basic-auth')
-const { host, port, services, users} = require('./config');
+const { fromIp, host, port, services, users} = require('./config');
+
 
 const app = express()
 
@@ -18,7 +19,7 @@ app.get('/check-service', (req, res) => {
 
     services.forEach(item => {
         mylib.CheckService(item.host, item.port)
-        final += `${item.system} ${item.group} ${item.host}:${item.host} -> ${mylib.socketSes.connnect} \n`
+        final += `${fromIp} -> ${item.host}:${item.port} (${item.system}): ${mylib.socketSes.connnect} \n`
     })
 
     res.send(final)
@@ -37,7 +38,7 @@ app.get('/check-service-sum', (req, res) => {
         else
             fails++
 
-        temp += `${item.group} ${item.system} ${item.host}:${item.host} -> ${mylib.socketSes.connnect} \n`
+        temp += `${fromIp} -> ${item.host}:${item.port} (${item.system}): ${mylib.socketSes.connnect} \n`
     })
 
     let final = `success ${success} \n fails ${fails} \n\n`
