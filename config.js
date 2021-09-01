@@ -2,40 +2,79 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-const fromIp = '192.168.68.107'
+const fromIp = '10.84.2.210'
 
 const services = [
   {
-      "host": "vnexpress.net",
+      "host": "svgw.hanwhalife.com.vn",
       "port": 443,
-      "system": "news"
+      "system": "svgw"
   },
   {
-      "host": "google.com",
-      "port": 443,
-      "system": "search"
+      "host": "10.84.1.135",
+      "port": 452,
+      "system": "cpo-proxy"
   },
   {
-      "host": "zingnews.vn",
-      "port": 443,
-      "system": "news"
+    "host": "10.84.1.135",
+    "port": 451,
+    "system": "cpo-prod"
   },
   {
-      "host": "thanhnien.vn",
-      "port": 443,
-      "system": "news"
+    "host": "10.84.1.135",
+    "port": 453,
+    "system": "cpo-uat"
   },
+
   {
-      "host": "tuoitre.vn",
-      "port": 443,
-      "system": "news"
+      "host": "10.84.1.135",
+      "port": 453,
+      "system": "cms-proxy"
   },
+
   {
-      "host": "facebook.vn",
-      "port": 443,
-      "system": "news"
+    "host": "10.84.1.115",
+    "port": 51516,
+    "system": "cms-cpo-prod"
+  },
+
+  {
+    "host": "10.84.1.115",
+    "port": 51517,
+    "system": "cms-cpo-api-prod"
+  },
+
+  {
+    "host": "10.84.1.219",
+    "port": 51516,
+    "system": "cms-cpo-uat"
+  },
+  
+  {
+    "host": "10.84.1.219",
+    "port": 51517,
+    "system": "cms-cpo-api-uat"
+  },
+
+  {
+    "host": "10.84.1.135",
+    "port": 453,
+    "system": "payment-proxy"
+  },
+
+  {
+    "host": "10.84.1.135",
+    "port": 8086,
+    "system": "urbox-prod"
+  },
+
+  {
+    "host": "10.84.5.73",
+    "port": 8086,
+    "system": "urbox-uat"
   }
 ]
+
 
 const users = {
   'ngocld': 'ngocld',

@@ -2,13 +2,12 @@ var net = require('net')
 var fs = require('fs');
 var deasync = require('deasync');
 var log4js = require('log4js')
-const { services } = require('./config');
 
 log4js.configure({
     appenders: {
         everything: {
-            type: 'file',
-            filename: 'all-logs.log',
+            type: 'dateFile',
+            filename: 'logs/all.log',
             maxLogSize: 10485760,
             backups: 30,
             compress: true
