@@ -2,7 +2,8 @@
 const dotenv = require('dotenv')
 dotenv.config()
 
-const fromIp = '10.84.2.210'
+const fromIp = '10.84.5.43'
+
 
 const services = [
   {
@@ -25,7 +26,23 @@ const services = [
     "port": 453,
     "system": "cpo-uat"
   },
-
+  {
+    "host": "10.84.1.238",
+    "port": 80,
+    "system": "cpo-epush"
+  },
+  {
+    "host": "10.84.1.105",
+    "port": 6379,
+    "system": "cpo-redis-prod"
+  },
+  
+  {
+    "host": "10.84.5.51",
+    "port": 6379,
+    "system": "cpo-redis-uat"
+  },
+  
   {
       "host": "10.84.1.135",
       "port": 453,

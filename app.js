@@ -6,6 +6,7 @@ const { fromIp, host, port, services, users} = require('./config');
 
 const app = express()
 
+console.log(`starting service http://${host}:${port}`)
 mylib.logger.info(`starting service http://${host}:${port}`)
 
 app.use(basicAuth({
