@@ -1,6 +1,7 @@
 var mylib = require('./mylib')
 var express = require('express')
 var basicAuth = require('express-basic-auth')
+var dateFormat = require('dateformat');
 const { fromIp, host, port, services, users} = require('./config');
 
 
@@ -20,8 +21,11 @@ app.get('/check-service', (req, res) => {
 
     services.forEach(item => {
         mylib.CheckService(item.host, item.port)
-        final += `${fromIp} -> ${item.host}:${item.port} (${item.system}): ${mylib.socketSes.connnect} \n`
+        final += `${item.host}:${item.port} (${item.system}): ${mylib.socketSes.connnect === true ? "ok" : "down"} \n`
     })
+
+    let now = dateFormat(new Date(), "HHgMM dd/mm");
+    final += `(${now})\n`
 
     res.send(final)
 })
@@ -39,11 +43,12 @@ app.get('/check-service-sum', (req, res) => {
         else
             fails++
 
-        temp += `${fromIp} -> ${item.host}:${item.port} (${item.system}): ${mylib.socketSes.connnect} \n`
+        temp += `${item.host}:${item.port}\r(${item.system}) ${mylib.socketSes.connnect === true ? "ok" : "down"} \n`
     })
 
-    let final = `success ${success} \n fails ${fails} \n\n`
-    final = final + temp
+    let now = dateFormat(new Date(), "HHgMM dd/mm");
+    let final = `Running ${success}/${success + fails} \n Stopped ${fails}\n--------------------\n`
+    final = final + temp + `(${now})`
     res.contentType = 'text/plain;charset=utf-8'
     res.send(final)
 })

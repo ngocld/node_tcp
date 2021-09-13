@@ -8,9 +8,9 @@ log4js.configure({
         everything: {
             type: 'dateFile',
             filename: 'logs/all.log',
-            maxLogSize: 10485760,
+            maxLogSize: 31457280,
             backups: 30,
-            compress: true
+            compress: false
         }
     },
     categories: {
