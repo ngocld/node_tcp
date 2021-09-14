@@ -61,8 +61,28 @@ const CheckService = (host, port) => {
     });
 }
 
+const ShowData = (responseData, view) => {
+    let final = ''
+    if (view == 'short')
+    {
+        final += `Running ${responseData.socket.running}\n`
+        final += `Stopped ${responseData.socket.topped}\n`
+    }
+
+    else{
+        final += `Running ${responseData.socket.running}\n`
+        final += `Stopped ${responseData.socket.topped}\n\n`
+        responseData.target.forEach(item => {
+            final += `${item.socket} ${item.service} > ${item.connect}\n`
+        })
+    }
+
+    return final
+}
+
 module.exports = {
     CheckService,
     socketSes,
-    logger
+    logger,
+    ShowData
 }
