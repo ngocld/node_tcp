@@ -43,7 +43,7 @@ app.get('/check-service-sum', (req, res) => {
         else
             fails++
 
-        temp += `${item.host}:${item.port}\r(${item.system}) ${mylib.socketSes.connnect === true ? "ok" : "down"} \n`
+        temp += `${item.host}:${item.port} (${item.system}) ${mylib.socketSes.connnect === true ? "ok" : "down"} \n`
     })
 
     let now = dateFormat(new Date(), "HHgMM dd/mm");
