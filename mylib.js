@@ -1,28 +1,5 @@
 var net = require('net')
-var fs = require('fs');
 var deasync = require('deasync');
-var log4js = require('log4js')
-
-log4js.configure({
-    appenders: {
-        everything: {
-            type: 'dateFile',
-            filename: 'logs/all.log',
-            maxLogSize: 31457280,
-            backups: 30,
-            compress: false
-        }
-    },
-    categories: {
-        default: {
-            appenders: ['everything'],
-            level: 'debug'
-        }
-    }
-})
-
-const logger = log4js.getLogger()
-logger.level = 'debugs'
 
 const socketSes = {
     connnect: false
@@ -83,6 +60,5 @@ const ShowData = (responseData, view) => {
 module.exports = {
     CheckService,
     socketSes,
-    logger,
     ShowData
 }

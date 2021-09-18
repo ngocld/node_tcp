@@ -1,109 +1,49 @@
-// config.js
-const dotenv = require("dotenv");
-dotenv.config();
-
+const { appSetting } = require("./config/setting");
+const { mylog } = require("./config/log");
 const fromIp = "10.84.2.210";
+const deasync = require('deasync');
 
-const services = [
-  {
-    id: 1,
-    host: "svgw.hanwhalife.com.vn",
-    port: 443,
-    system: "svgw",
+const knex = require('knex')({
+  client: 'sqlite3',
+  connection: {
+    filename: './data/socket.sqlite3',
   },
-  {
-    id: 2,
-    host: "10.84.1.135",
-    port: 452,
-    system: "mcpo-proxy",
-  },
-  {
-    id: 3,
-    host: "10.84.1.135",
-    port: 451,
-    system: "mcpo-prod",
-  },
-  {
-    id: 4,
-    host: "10.84.5.73",
-    port: 453,
-    system: "mcpo-uat",
-  },
-  {
-    id: 5,
-    host: "10.84.1.238",
-    port: 80,
-    system: "mcpo-epush",
-  },
-  {
-    id: 6,
-    host: "10.84.1.105",
-    port: 6379,
-    system: "mcpo-redis-prod",
-  },
-  {
-    id: 7,
-    host: "10.84.5.51",
-    port: 6379,
-    system: "mcpo-redis-uat",
-  },
+  useNullAsDefault: true
+});
 
-  {
-    id: 8,
-    host: "10.84.1.135",
-    port: 453,
-    system: "cms-proxy",
-  },
+var services = []
+const getSocket = () => {
+    var done = false;
+    knex('socket').select('id', 'host', 'port', 'name as system').then((rows) => {
+      done = true  
+      rows.forEach(element => {
+            services.push(element)
+        });
+    })
+    deasync.loopWhile(function () {
+        return !done
+    });
+}
 
-  {
-    id: 9,
-    host: "10.84.1.115",
-    port: 51516,
-    system: "cms-cpo-prod",
-  },
-
-  {
-    id: 10,
-    host: "10.84.1.115",
-    port: 51517,
-    system: "cms-cpo-api-prod",
-  },
-
-  {
-    id: 11,
-    host: "10.84.1.219",
-    port: 51516,
-    system: "cms-cpo-uat",
-  },
-
-  {
-    id: 12,
-    host: "10.84.1.219",
-    port: 51517,
-    system: "cms-cpo-api-uat",
-  },
-
-  {
-    id: 13,
-    host: "10.84.1.135",
-    port: 453,
-    system: "payment-proxy",
-  },
-
-  {
-    id: 14,
-    host: "10.84.1.135",
-    port: 8086,
-    system: "urbox-prod",
-  },
-
-  {
-    id: 15,
-    host: "10.84.5.73",
-    port: 8086,
-    system: "urbox-uat",
-  },
-];
+// const services = [{
+//     id: 1,
+//     host: "svgw.hanwhalife.com.vn",
+//     port: 443,
+//     system: "svgw"
+//   },
+//   {
+//     id: 2,
+//     host: "vnexpress.net",
+//     port: 443,
+//     system: "vnexpress"
+//   },
+//   {
+//     id: 3,
+//     host: "news.zing.vn",
+//     port: 443,
+//     system: "zing"
+//   }
+// ];
 
 const users = {
   ngocld: "ngocld",
@@ -111,9 +51,11 @@ const users = {
 };
 
 module.exports = {
-  host: process.env.APP_HOST,
-  port: process.env.APP_PORT,
+  host: appSetting.host,
+  port: appSetting.port,
   fromIp: fromIp,
   services: services,
   users: users,
-};
+  mylog: mylog,
+  getSocket: getSocket
+}
