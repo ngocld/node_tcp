@@ -41,7 +41,7 @@ app.get('/check-all', (req, res) => {
 
         socketName = `${item.host}:${item.port}`
         socketConnect = `${mylib.socketSes.connnect === true ? "ok" : "down"}`
-        responseData.target.push({id: item.id, service: item.system, socket: socketName, connect: socketConnect})
+        responseData.target.push({id: item.id, service: item.name, socket: socketName, connect: socketConnect})
     })
 
     responseData.socket.running = success;

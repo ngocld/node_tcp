@@ -3,6 +3,7 @@ const { mylog } = require("./config/log");
 const fromIp = "10.84.2.210";
 const deasync = require('deasync');
 
+
 const knex = require('knex')({
   client: 'sqlite3',
   connection: {
@@ -11,11 +12,12 @@ const knex = require('knex')({
   useNullAsDefault: true
 });
 
-var services = []
+let services = []
 const getSocket = () => {
+    services.length = 0
     var done = false;
-    knex('socket').select('id', 'host', 'port', 'name as system').then((rows) => {
-      done = true  
+    knex('socket').select('id', 'host', 'port', 'name').then((rows) => {
+      done = true 
       rows.forEach(element => {
             services.push(element)
         });
