@@ -1,8 +1,11 @@
-const { appSetting } = require("./config/setting");
-const { mylog } = require("./config/log");
+const {
+  appSetting
+} = require("./config/setting");
+const {
+  mylog
+} = require("./config/log");
 const fromIp = "10.84.2.210";
 const deasync = require('deasync');
-
 
 const knex = require('knex')({
   client: 'sqlite3',
@@ -12,40 +15,44 @@ const knex = require('knex')({
   useNullAsDefault: true
 });
 
+
 let services = []
-const getSocket = () => {
-    services.length = 0
-    var done = false;
-    knex('socket').select('id', 'host', 'port', 'name').then((rows) => {
-      done = true 
-      rows.forEach(element => {
-            services.push(element)
-        });
-    })
-    deasync.loopWhile(function () {
-        return !done
+const getSocketAll = () => {
+  services.length = 0
+  var done = false;
+  knex('socket').select('name as socket', 'host', 'port').then((rows) => {
+    done = true
+    rows.forEach(element => {
+      services.push(element)
     });
+  })
+
+  deasync.loopWhile(function () {
+    return !done
+  });
 }
 
-// const services = [{
-//     id: 1,
-//     host: "svgw.hanwhalife.com.vn",
-//     port: 443,
-//     system: "svgw"
-//   },
-//   {
-//     id: 2,
-//     host: "vnexpress.net",
-//     port: 443,
-//     system: "vnexpress"
-//   },
-//   {
-//     id: 3,
-//     host: "news.zing.vn",
-//     port: 443,
-//     system: "zing"
-//   }
-// ];
+const getSocket = (appName) => {
+  services.length = 0
+  var done = false;
+
+  knex('app')
+    .innerJoin('app_socket', 'app_socket.app_id', '=', 'app.id')
+    .innerJoin('socket', 'socket.id', '=', 'app_socket.socket_id')
+    .select('app.name as app', 'socket.name as socket', 'socket.host', 'socket.port')
+    .where('app.name', appName)
+    .then((rows) => {
+      done = true
+      rows.forEach(element => {
+        services.push(element)
+      });
+    })
+
+  deasync.loopWhile(function () {
+    return !done
+  });
+}
+
 
 const users = {
   ngocld: "ngocld",
@@ -59,5 +66,6 @@ module.exports = {
   services: services,
   users: users,
   mylog: mylog,
-  getSocket: getSocket
+  getSocketAll: getSocketAll,
+  getSocket : getSocket
 }
