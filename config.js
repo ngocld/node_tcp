@@ -20,7 +20,30 @@ let services = []
 const getSocketAll = () => {
   services.length = 0
   var done = false;
-  knex('socket').select('name as socket', 'host', 'port').then((rows) => {
+  knex('socket')
+  .where('active', '1')
+  .select('name as socket', 'host', 'port').then((rows) => {
+    done = true
+    rows.forEach(element => {
+      services.push(element)
+    });
+  })
+
+  deasync.loopWhile(function () {
+    return !done
+  });
+}
+
+
+const getSocketIp = (Ip)
+ => {
+  services.length = 0
+  var done = false;
+  knex('socket')
+  .where('active', '1')
+  .andWhere('ip', Ip)
+  .orderBy('name', 'asc')
+  .select('name as socket', 'host', 'port').then((rows) => {
     done = true
     rows.forEach(element => {
       services.push(element)
@@ -41,6 +64,9 @@ const getSocket = (appName) => {
     .innerJoin('socket', 'socket.id', '=', 'app_socket.socket_id')
     .select('app.name as app', 'socket.name as socket', 'socket.host', 'socket.port')
     .where('app.name', appName)
+    .andWhere('app.active', '1')
+    .andWhere('app_socket.active', '1')
+    .orderBy('app_socket.sort', 'asc')
     .then((rows) => {
       done = true
       rows.forEach(element => {
@@ -52,6 +78,8 @@ const getSocket = (appName) => {
     return !done
   });
 }
+
+
 
 
 const users = {
@@ -67,5 +95,7 @@ module.exports = {
   users: users,
   mylog: mylog,
   getSocketAll: getSocketAll,
-  getSocket : getSocket
+  getSocket : getSocket,
+  getSocketIp: getSocketIp
 }
+

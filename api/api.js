@@ -10,7 +10,8 @@ const {
     users,
     mylog,
     getSocket,
-    getSocketAll
+    getSocketAll,
+    getSocketIp
 } = require('./../config');
 
 const app = express()
@@ -68,6 +69,58 @@ app.get('/check-all', (req, res) => {
     res.json(final)
 })
 
+app.get('/check-ip', (req, res) => {
+    let ipAddress = req.query['q'] === undefined ? "" : req.query['q']
+    let view = req.query['v'] === undefined ? "" : req.query['v']
+
+    mylog.info(req.url)
+    getSocketIp(ipAddress)
+
+    let now = dateFormat(new Date(), "HHgMM dd/mm");
+    let success = 0
+    let fails = 0
+    let responseData = {
+        socket: {
+            app: ipAddress,
+            running: 0,
+            topped: 0,
+            uptime: now,
+            from: fromIp,
+        },
+        target: []
+    }
+
+    let socketInfo = ''
+    let socketConnect = ''
+
+    if (services.length === 0) {
+        responseData.socket.app = `IP ${responseData.socket.app} is invalid`
+    } else {
+        services.forEach(item => {
+            mylib.CheckService(item.host, item.port)
+            if (mylib.socketSes.connnect === true)
+                success++
+            else
+                fails++
+
+            socketInfo = `${item.host}:${item.port}`
+            socketConnect = `${mylib.socketSes.connnect === true ? "ok" : "down"}`
+            responseData.target.push({
+                socketName: item.socket,
+                socketInfo: socketInfo,
+                connect: socketConnect
+            })
+        })
+    }
+
+    responseData.socket.running = success;
+    responseData.socket.topped = fails;
+
+    // Show data
+    let final = mylib.ShowData(responseData, view)
+    res.json(final)
+})
+
 app.get('/check-app', (req, res) => {
     let appName = req.query['q'] === undefined ? "" : req.query['q']
     let view = req.query['v'] === undefined ? "" : req.query['v']
@@ -112,7 +165,6 @@ app.get('/check-app', (req, res) => {
         })
     }
 
-
     responseData.socket.running = success;
     responseData.socket.topped = fails;
 
@@ -120,69 +172,6 @@ app.get('/check-app', (req, res) => {
     let final = mylib.ShowData(responseData, view)
     res.json(final)
 })
-
-
-
-// app.get('/check-service/', (req, res) => {
-//     mylog.info(req.url)
-
-//     let query = req.query['query'] === undefined ? "" : req.query['query']
-//     let view = req.query['view']
-
-//     // Get list service from query
-//     let arr = query.split(',')
-
-//     let service1 = []
-//     services.forEach(item => {
-//         if (query == '')
-//             service1.push(item)
-//         else {
-//             if (arr.includes(item.id.toString()))
-//             service1.push(item)
-//         }
-//     })
-
-//     if (service1.length == 0)
-//     {
-//         res.send("Dont't find service")
-//         return
-//     }
-
-//     // Get Result
-//     let now = dateFormat(new Date(), "HHgMM dd/mm");
-//     let success = 0
-//     let fails = 0
-//     let responseData = {
-//         socket: {
-//             running: 0,
-//             topped: 0,
-//             uptime: now,
-//             from: fromIp,
-//         },
-//         target: []
-//     }
-
-//     let socketInfo = ''
-//     let socketConnect = ''
-//     service1.forEach(item => {
-//         mylib.CheckService(item.host, item.port)
-//         if (mylib.socketSes.connnect === true)
-//             success++
-//         else
-//             fails++
-
-//         socketInfo = `${item.host}:${item.port}`
-//         socketConnect = `${mylib.socketSes.connnect === true ? "ok" : "down"}`
-//         responseData.target.push({id: item.id, service: item.system, socket: socketInfo, connect: socketConnect})
-//     })
-
-//     responseData.socket.running = success;
-//     responseData.socket.topped = fails;
-
-//     // Show data
-//     let final = mylib.ShowData(responseData, view)
-//     res.send(final)
-// })
 
 app.listen(port, host)
 
