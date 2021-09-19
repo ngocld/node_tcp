@@ -36,7 +36,7 @@ app.get('/check-all', (req, res) => {
         socket: {
             app: 'all',
             running: 0,
-            topped: 0,
+            stopped: 0,
             uptime: now,
             from: fromIp,
         },
@@ -62,7 +62,7 @@ app.get('/check-all', (req, res) => {
     })
 
     responseData.socket.running = success;
-    responseData.socket.topped = fails;
+    responseData.socket.stopped = fails;
 
     // Show data
     let final = mylib.ShowData(responseData, view)
@@ -83,7 +83,7 @@ app.get('/check-ip', (req, res) => {
         socket: {
             app: ipAddress,
             running: 0,
-            topped: 0,
+            stopped: 0,
             uptime: now,
             from: fromIp,
         },
@@ -114,7 +114,7 @@ app.get('/check-ip', (req, res) => {
     }
 
     responseData.socket.running = success;
-    responseData.socket.topped = fails;
+    responseData.socket.stopped = fails;
 
     // Show data
     let final = mylib.ShowData(responseData, view)
@@ -135,7 +135,7 @@ app.get('/check-app', (req, res) => {
         socket: {
             app: appName,
             running: 0,
-            topped: 0,
+            stopped: 0,
             uptime: now,
             from: fromIp,
         },
@@ -166,7 +166,7 @@ app.get('/check-app', (req, res) => {
     }
 
     responseData.socket.running = success;
-    responseData.socket.topped = fails;
+    responseData.socket.stopped = fails;
 
     // Show data
     let final = mylib.ShowData(responseData, view)

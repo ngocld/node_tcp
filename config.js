@@ -21,13 +21,13 @@ const getSocketAll = () => {
   services.length = 0
   var done = false;
   knex('socket')
-  .where('active', '1')
-  .select('name as socket', 'host', 'port').then((rows) => {
-    done = true
-    rows.forEach(element => {
-      services.push(element)
-    });
-  })
+    .where('active', '1')
+    .select('name as socket', 'host', 'port').then((rows) => {
+      done = true
+      rows.forEach(element => {
+        services.push(element)
+      });
+    })
 
   deasync.loopWhile(function () {
     return !done
@@ -35,20 +35,19 @@ const getSocketAll = () => {
 }
 
 
-const getSocketIp = (Ip)
- => {
+const getSocketIp = (Ip) => {
   services.length = 0
   var done = false;
   knex('socket')
-  .where('active', '1')
-  .andWhere('ip', Ip)
-  .orderBy('name', 'asc')
-  .select('name as socket', 'host', 'port').then((rows) => {
-    done = true
-    rows.forEach(element => {
-      services.push(element)
-    });
-  })
+    .where('active', '1')
+    .andWhere('ip', Ip)
+    .orderBy('name', 'asc')
+    .select('name as socket', 'host', 'port').then((rows) => {
+      done = true
+      rows.forEach(element => {
+        services.push(element)
+      });
+    })
 
   deasync.loopWhile(function () {
     return !done
@@ -95,7 +94,6 @@ module.exports = {
   users: users,
   mylog: mylog,
   getSocketAll: getSocketAll,
-  getSocket : getSocket,
+  getSocket: getSocket,
   getSocketIp: getSocketIp
 }
-
