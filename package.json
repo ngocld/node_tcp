@@ -1,0 +1,21 @@
+{
+  "name": "node_tcp",
+  "version": "1.0.0",
+  "description": "example network",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ngocld",
+  "license": "ISC",
+  "dependencies": {
+    "dateformat": "^4.5.1",
+    "deasync": "^0.1.23",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0",
+    "knex": "^0.95.11",
+    "log4js": "^6.3.0",
+    "sqlite3": "^5.0.2"
+  }
+}
