@@ -65,6 +65,7 @@ const getSocket = (appName) => {
     .where('app.name', appName)
     .andWhere('app.active', '1')
     .andWhere('app_socket.active', '1')
+    .andWhere('socket.active', '1')
     .orderBy('app_socket.sort', 'asc')
     .then((rows) => {
       done = true
